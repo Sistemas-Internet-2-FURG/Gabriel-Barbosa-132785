@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar ou Apagar</title>
+</head>
+<body>
+    <h1>Editar turma</h1>
+    <form action="{{edita_apaga}}" method="post">
+        <input type="hidden" name="id" value="{{turma[0]}}">
+        <label>Nome da turma:</label>
+        <input type="text" name="nome_turma" value="{{turma[1]}}">
+        <label>Turno:</label>
+        <input type="text" name="turno" value="{{turma[2]}}">
+        <button name="opcao" value="salvar">Salvar</button>
+        <button name="opcao" value="deletar">Deletar</button>
+    </form>
+</body>
+</html>
