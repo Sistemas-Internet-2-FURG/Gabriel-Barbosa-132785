@@ -8,9 +8,9 @@ app.config["SESSION_TYPE"] = "filesystem"
 app.config["SESSION_FILE_DIR"] = "./sessoes"
 
 conn = sqlite3.connect("data_base.db")
-conn.execute("CREATE TABLE IF NOT EXISTS turmas (id INTEGER PRIMARY KEY, nome TEXT, turno TEXT)")
-conn.execute("CREATE TABLE IF NOT EXISTS professores (id INTEGER PRIMARY KEY, nome TEXT, senha TEXT)")
-conn.execute("CREATE TABLE IF NOT EXISTS alunos (id INTEGER PRIMARY KEY, nome TEXT, senha TEXT, id_turma INTEGER, FOREIGN KEY(id_turma) REFERENCES turmas(id))")
+conn.execute("CREATE TABLE IF NOT EXISTS turmas (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, turno TEXT)")
+conn.execute("CREATE TABLE IF NOT EXISTS professores (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, senha TEXT)")
+conn.execute("CREATE TABLE IF NOT EXISTS alunos (id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, senha TEXT, id_turma INTEGER, FOREIGN KEY(id_turma) REFERENCES turmas(id))")
 
 chamada = {}
 
@@ -93,7 +93,7 @@ def edita_apaga():
     conn = sqlite3.connect("data_base.db")
     if request.method == "GET":
         turma = conn.execute(f"SELECT * FROM turmas WHERE id = {request.args.get('escolha')}")
-        return render_template("edita_apaga.html", turma=list(turma)[0])
+        return render_template("edita_apaga.html", turma=list(turma)[0], erro=False)
     if request.method == "POST":
         id = request.form.get("id")
         nome = request.form.get("nome_turma")
@@ -102,6 +102,10 @@ def edita_apaga():
         if opcao == "salvar":
             conn.execute(f"UPDATE turmas SET nome='{nome}', turno='{turno}' WHERE id='{id}'")
         if opcao == "deletar":
+            dados = conn.execute(f"SELECT * FROM alunos WHERE id_turma='{id}'")
+            if len(list(dados)) > 0:
+                turma = conn.execute(f"SELECT * FROM turmas WHERE id = {request.args.get('escolha')}")
+                return render_template("edita_apaga.html", turma=list(turma)[0], erro=True)
             conn.execute(f"DELETE FROM turmas WHERE id='{id}'")
         conn.commit()
         return redirect("/dashboard")
@@ -109,25 +113,6 @@ def edita_apaga():
 @app.route("/")
 def home():
 	return render_template('index.html')
-
-@app.route("/variaveis", methods = ['POST', 'GET'])
-def usando_variaveis():
-    matricula = request.form.get('nova_matricula')
-    aluno = request.form.get('novo_aluno')
-    print('-' * 10)
-    print(matricula, aluno)
-    print('-' * 10)
-    with open("data_base.csv", "r") as file:
-        data = file.readlines()
-        chamada = {}
-        for linha in data:
-            linha = linha[:-1].split(';')
-            chamada[linha[0]] = linha[1]
-    if request.method == "POST" and len(matricula) > 0:
-        chamada[matricula] = aluno
-        with open("data_base.csv", "a") as file:
-            file.write(f"{matricula};{aluno}\n")
-    return render_template('variaveis.html', chamada=chamada)
 
 @app.route("/r_professor", methods = ["GET", "POST"])
 def registro_p():

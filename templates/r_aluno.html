@@ -13,13 +13,15 @@
             <input type="text" name="nome" required>
             <label>Senha:</label>
             <input type="password" name="senha" required>
-            <input type="hidden" name="cargo" value="aluno">
             <br>
+            <input type="hidden" name="cargo" value="aluno">
             {% for id, nome, turno in turmas %}
+            <br>
                 <input type="radio" name="escolha" value="{{id}}" required>
                 <label>Turma: {{nome}}, Turno: {{turno}}</label>
                 <br>
             {% endfor %}
+            <br>
             <button type="submit">Salvar</button>
         </form>
     {% else %}

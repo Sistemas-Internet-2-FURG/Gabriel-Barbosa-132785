@@ -16,5 +16,8 @@
         <button name="opcao" value="salvar">Salvar</button>
         <button name="opcao" value="deletar">Deletar</button>
     </form>
+    {% if erro %}
+        <h3>Você não pode apagar uma turma que possui alunos</h3>
+    {% endif %}
 </body>
 </html>
