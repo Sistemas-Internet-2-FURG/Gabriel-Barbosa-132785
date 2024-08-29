@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professor</title>
+</head>
+<body>
+    <h1>Registro de professor</h1>
+    <form action="{{registro_p}}" method="post">
+        <label>Usuario:</label>
+        <input type="text" name="nome" required>
+        <label>Senha:</label>
+        <input type="password" name="senha" required>
+        <button type="submit">Salvar</button>
+    </form>
+    {% if ja_existe %}
+        <h3>Esse usuario ja existe</h3>
+    {% endif %}
+</body>
+</html>

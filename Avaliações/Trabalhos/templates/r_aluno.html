@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aluno</title>
+</head>
+<body>
+    <h1>Registro de aluno</h1>
+    {% if liberado %}
+        <form action="{{registro_a}}" method="post">
+            <label>Usuario:</label>
+            <input type="text" name="nome" required>
+            <label>Senha:</label>
+            <input type="password" name="senha" required>
+            <br>
+            <input type="hidden" name="cargo" value="aluno">
+            {% for id, nome, turno in turmas %}
+            <br>
+                <input type="radio" name="escolha" value="{{id}}" required>
+                <label>Turma: {{nome}}, Turno: {{turno}}</label>
+                <br>
+            {% endfor %}
+            <br>
+            <button type="submit">Salvar</button>
+        </form>
+    {% else %}
+        <h1>As turmas ainda não foram disponibilizadas</h1>
+    {% endif %}
+</body>
+</html>
